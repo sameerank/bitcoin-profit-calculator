@@ -5,7 +5,6 @@
     $http.get("https://bitpay.com/api/rates")
     .success(function (data) {
 
-      $scope.rates = data;
       $scope.currRate = data.filter(function(object) {
         return object.code === "USD"
       })[0].rate;
