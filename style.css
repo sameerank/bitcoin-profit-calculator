@@ -7,6 +7,15 @@ input {
   margin: 0 auto;
 }
 
+.container {
+  width: 450px;
+  text-align: center;
+}
+
+.flex-center {
+  position: flex;
+}
+
 .number {
   font-weight: bold;
 }
