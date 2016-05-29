@@ -3,7 +3,8 @@ label, table {
 }
 
 input {
-  max-width: 400px;
+  max-width: 200px;
+  margin: 0 auto;
 }
 
 .number {
@@ -12,5 +13,5 @@ input {
 
 .jumbotron {
   height: 100%;
-  margin-bottom: 0;
+  margin-bottom: 0
 }
