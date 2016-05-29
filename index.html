@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html ng-app="bitcoinCalculator" ng-controller="bitcoinController">
+  <head>
+    <meta charset="utf-8">
+    <title>Bitcoin Investment Tool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" media="screen" title="no title" charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <style media="screen">
+      .number { font-weight: bold;}
+    </style>
+    <script type="text/javascript">
+      var bitcoinCalculator = angular.module('bitcoinCalculator', []);
+      bitcoinCalculator.controller('bitcoinController', function($scope, $http) {
+        $http.get("https://bitpay.com/api/rates")
+        .success(function (data) {
+
+          $scope.rates = data;
+          $scope.currRate = data.filter(function(object) {
+            return object.code === "USD"
+          })[0].rate;
+          $scope.initialAmt = 5000;
+          $scope.newAmt = function (price) {
+            return price / $scope.currRate * $scope.initialAmt;
+          };
+          $scope.profit = function (price) {
+            return price / $scope.currRate * $scope.initialAmt - $scope.initialAmt;
+          };
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="jumbotron">
+      <div class="row">
+        <div class="col-sm-12">
+
+          <h1>Bitcoin Investment Tool</h1>
+          <br><br>
+          <form role="form">
+            <label for="starting-investment">Value of an initial investment (USD):</label>
+            <input type="number" class="form-control"
+            ng-model="initialAmt" placeholder="{{initialAmt}}">
+          </form>
+          <br>
+          <p>Current price of 1 BTC: <span class="number">{{currRate | currency}}</span></p>
+        </div>
+      </div>
+      <div class="row">
+        <br><br>
+        <div class="col-sm-7">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>
+                  If the price of 1 BTC reaches
+                </th>
+                <th>
+                  your investment is worth
+                </th>
+                <th>
+                  and your profit is
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="n in [1000, 5000, 10000, 25000, 50000]">
+                <td>
+                  ${{ n }}
+                </td>
+                <td>
+                  {{ newAmt(n) | currency }}
+                </td>
+                <td>
+                  {{ profit(n) | currency }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-sm-5 text-center">
+          <i class="fa fa-btc fa-5x" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
