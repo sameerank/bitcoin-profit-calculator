@@ -2,43 +2,18 @@
 <html ng-app="bitcoinCalculator" ng-controller="bitcoinController">
   <head>
     <meta charset="utf-8">
-    <title>Bitcoin Investment Tool</title>
+    <title>Bitcoin Profit Calculator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" media="screen" title="no title" charset="utf-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
-    <style media="screen">
-      .number { font-weight: bold;}
-    </style>
-    <script type="text/javascript">
-      var bitcoinCalculator = angular.module('bitcoinCalculator', []);
-      bitcoinCalculator.controller('bitcoinController', function($scope, $http) {
-        $http.get("https://bitpay.com/api/rates")
-        .success(function (data) {
-
-          $scope.rates = data;
-          $scope.currRate = data.filter(function(object) {
-            return object.code === "USD"
-          })[0].rate;
-          $scope.initialAmt = 5000;
-          $scope.newAmt = function (price) {
-            return price / $scope.currRate * $scope.initialAmt;
-          };
-          $scope.profit = function (price) {
-            return price / $scope.currRate * $scope.initialAmt - $scope.initialAmt;
-          };
-        });
-      });
-    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.css">
+    <link rel="stylesheet" href="./style.css" charset="utf-8">
   </head>
   <body>
     <div class="jumbotron">
       <div class="row">
         <div class="col-sm-12">
-
-          <h1>Bitcoin Investment Tool</h1>
+          <h1>Bitcoin Profit Calculator</h1>
           <br><br>
           <form role="form">
             <label for="starting-investment">Value of an initial investment (USD):</label>
@@ -85,6 +60,22 @@
           <i class="fa fa-btc fa-5x" aria-hidden="true"></i>
         </div>
       </div>
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <nvd3-historical-bar-chart height="350" data="exampleData" showXAxis="true" showYAxis="true" showLegend="true">
+          </nvd3-historical-bar-chart>
+        </div>
+      </div>
     </div>
+
+    <!-- scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-nvd3-directives/0.0.7/angularjs-nvd3-directives.min.js"></script>
+    <script src="./calculate.js" charset="utf-8"></script>
+
   </body>
 </html>
